@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String?
+  role          Role      @default(EMPLOYEE)
+  image         String?
+  department    String?
+  position      String?
+  joinedAt      DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  appraisals    Appraisal[] @relation("EmployeeAppraisals")
+  reviewedBy    Appraisal[] @relation("ReviewerAppraisals")
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Appraisal {
+  id              String   @id @default(cuid())
+  employeeId      String
+  reviewerId      String?
+  period          String
+  status          AppraisalStatus @default(PENDING)
+  performance     Float?
+  productivity    Float?
+  teamwork        Float?
+  leadership      Float?
+  innovation      Float?
+  communication   Float?
+  overallScore    Float?
+  mlScore         Float?
+  mlInsights      String?
+  comments        String?
+  goals           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  employee        User     @relation("EmployeeAppraisals", fields: [employeeId], references: [id])
+  reviewer        User?    @relation("ReviewerAppraisals", fields: [reviewerId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum AppraisalStatus {
+  PENDING
+  IN_REVIEW
+  COMPLETED
+  APPROVED
+}
