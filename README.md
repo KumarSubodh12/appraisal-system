@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![AppraisalAI Banner](https://appraisal-system-theta.vercel.app)
+![AppraisalAI](https://img.shields.io/badge/AppraisalAI-ML_Powered_Performance-gold?style=for-the-badge)
 
 **A premium, ML-powered employee performance appraisal system built with Next.js**
 
