@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  return NextResponse.json({ id: params.id, message: 'ok' })
+export async function GET(req: NextRequest) {
+  return NextResponse.json({ message: 'ok' })
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  return NextResponse.json({ id: params.id, message: 'ok' })
-}
-
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  return NextResponse.json({ success: true })
+export async function POST(req: NextRequest) {
+  return NextResponse.json({ message: 'ok' }, { status: 201 })
 }
